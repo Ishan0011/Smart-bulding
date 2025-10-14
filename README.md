@@ -12,4 +12,4 @@ It automates lights and fans based on occupancy and temperature, displays real-t
 -  Real-time 16×2 LCD display
 -  IoT integration using ESP8266 (ThingSpeak / Blynk)
 -  Estimated 20–30 % reduction in energy use
--  Extendable for AI-based prediction in future versions
+-  Extendable for AI-based prediction in future versions.
