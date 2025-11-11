@@ -1,0 +1,61 @@
+#include <ESP8266WiFi.h>
+
+const char* ssid = "Admin";        //  Wi-Fi SSID
+const char* password = ""; // Wi-Fi Password
+const char* apiKey = "JF10UCRBNQIBX0GE";    //  ThingSpeak  API Key
+const char* server = "api.thingspeak.com";
+
+WiFiClient client;
+String inputData = "";
+
+void setup() {
+  Serial.begin(9600); // match Arduino esp baud
+  delay(1000);
+
+  Serial.println("Connecting to WiFi...");
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi Connected!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  if (Serial.available()) {
+    inputData = Serial.readStringUntil('\n');
+    inputData.trim();
+
+    // Expected input from Arduino: temp,hum,motion,current
+    float t = 0, h = 0, c = 0;
+    int motion = 0;
+    sscanf(inputData.c_str(), "%f,%f,%d,%f", &t, &h, &motion, &c);
+
+    Serial.print("Received from Arduino: ");
+    Serial.println(inputData);
+
+    if (client.connect(server, 80)) {
+      String url = "/update?api_key=" + String(apiKey) +
+                   "&field1=" + String(t) +
+                   "&field2=" + String(h) +
+                   "&field3=" + String(motion) +
+                   "&field4=" + String(c);
+
+      Serial.println("Sending to ThingSpeak: " + url);
+
+      client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+                   "Host: " + server + "\r\n" +
+                   "Connection: close\r\n\r\n");
+
+      client.stop();
+      Serial.println("✅ Data sent successfully\n");
+    } else {
+      Serial.println("❌ Connection to ThingSpeak failed");
+    }
+
+    delay(16000); 
+  }
+}
