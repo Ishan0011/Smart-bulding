@@ -55,7 +55,6 @@ void loop() {
     } else {
       Serial.println("❌ Connection to ThingSpeak failed");
     }
-
     delay(16000); 
   }
 }
