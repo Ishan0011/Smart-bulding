@@ -29,7 +29,7 @@ void loop() {
     inputData = Serial.readStringUntil('\n');
     inputData.trim();
 
-    // Expected input from Arduino: temp,hum,motion,current
+    // Expected input from Arduino: temp,hum,motion,current and uploading cloud
     float t = 0, h = 0, c = 0;
     int motion = 0;
     sscanf(inputData.c_str(), "%f,%f,%d,%f", &t, &h, &motion, &c);

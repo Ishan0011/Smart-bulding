@@ -31,7 +31,7 @@ void loop() {
   if (occupied) digitalWrite(RELAY1, LOW); else digitalWrite(RELAY1, HIGH);
   if (occupied && t > 30) digitalWrite(RELAY2, LOW); else digitalWrite(RELAY2, HIGH);
 
-  // Display
+  // LED Display
   lcd.setCursor(0,0);
   lcd.print("T:"); lcd.print(t); lcd.print("C ");
   lcd.setCursor(0,1);
