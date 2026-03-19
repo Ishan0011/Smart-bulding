@@ -3,206 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Bulding</title>
+  <title>Smart Building Live Dashboard</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
     body {
       font-family: 'Poppins', sans-serif;
-      background: url('techkritibg.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background-color: #f4f7f6;
       color: #333;
-    }
-
-    .container {
-      background-color: rgba(0, 0, 0, 0.6);
-      color: white;
+      text-align: center;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-      max-width: 80%;
-      width: 500px;
-      text-align: center;
-      position: relative;
-      backdrop-filter: blur(0px);
     }
-
-    h2 {
-      color: #ecf0f1;
-      margin-bottom: 20px;
-      font-size: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 40px auto;
     }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin: 15px 0 5px;
-      text-align: left;
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
-
-    input[type="text"], input[type="email"], input[type="submit"], input[type="tel"], textarea {
-      width: calc(100% - 24px);
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      font-family: 'Poppins', sans-serif;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      box-sizing: border-box;
+    .card:hover {
+      transform: translateY(-5px);
     }
-
-    input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, textarea:focus {
-      border-color: #3498db;
-      box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+    .card h3 {
+      margin: 0;
+      color: #7f8c8d;
+      font-size: 1.2rem;
     }
-
-    input[type="submit"] {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      cursor: pointer;
-      padding: 12px 0;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #2980b9;
-    }
-
-    .loading, .success-message {
-      text-align: center;
-      display: none;
-      font-size: 16px;
-      margin-top: 20px;
-    }
-
-    .loading {
-      color: #888;
-    }
-
-    .success-message {
-      color: #2ecc71;
+    .card .value {
+      font-size: 2.5rem;
       font-weight: bold;
+      color: #2c3e50;
+      margin: 10px 0;
     }
-
-    .form-group {
-      text-align: left;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-        width: 85%;
-        backdrop-filter: blur(10px);
-      }
-
-      h2 {
-        font-size: 20px;
-      }
-
-      input[type="text"], input[type="email"], input[type="tel"], textarea {
-        font-size: 14px;
-      }
-
-      input[type="submit"] {
-        padding: 10px 0;
-      }
-
-      .loading, .success-message {
-        font-size: 14px;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .container {
-        padding: 10px;
-        width: 90%;
-      }
-
-      h2 {
-        font-size: 18px;
-      }
-
-      input[type="text"], input[type="email"], input[type="tel"], textarea {
-        font-size: 13px;
-      }
-
-      input[type="submit"] {
-        padding: 8px 0;
-      }
-
-      .loading, .success-message {
-        font-size: 12px;
-      }
+    .status {
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Login Portal</h2>
-    <form id="registrationForm">
-      <div class="form-group">
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-      </div>
 
-      <div class="form-group">
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-      </div>
+  <h1>🏢 Smart Building Live Dashboard</h1>
+  <p class="status">Status: <span id="sync-status">Waiting for data...</span></p>
 
-      <div class="form-group">
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-      </div>
+  <div class="grid-container">
+    <div class="card">
+      <h3>Temperature</h3>
+      <div class="value" id="temp-val">-- °C</div>
+    </div>
+    
+    <div class="card">
+      <h3>Humidity</h3>
+      <div class="value" id="hum-val">-- %</div>
+    </div>
 
-      <div class="form-group">
-        <label for="phone">Password:</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter your Password" required>
-      </div>
+    <div class="card">
+      <h3>Motion State</h3>
+      <div class="value" id="motion-val">--</div>
+    </div>
 
-      <input type="submit" value="Register">
-
-      <p class="loading">Processing your registration...</p>
-      <p class="success-message">Registration Completed Successfully! <br> Check your email for confirmation.</p>
-    </form>
+    <div class="card">
+      <h3>Live Power</h3>
+      <div class="value" id="power-val">-- W</div>
+    </div>
   </div>
 
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw4GyaeKBPBm5AfX18lh6is-JbqKcnKPS_tMwhSetxcFtryf5G0kWyBVMyo9OsXzD6F/exec';
-    const form = document.getElementById('registrationForm');
-    const loadingMessage = document.querySelector('.loading');
-    const successMessage = document.querySelector('.success-message');
+<!-- script -->
+ <script>
+  // Your ThingSpeak API URL
+  const apiURL = 'https://api.thingspeak.com/channels/3156321/feeds/last.json?api_key=LF4U9OKXL9D84MU6';
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+  // Function to fetch data from the cloud
+  async function fetchSmartBuildingData() {
+    try {
+      document.getElementById('sync-status').innerText = 'Syncing...';
+      document.getElementById('sync-status').style.color = '#f39c12';
 
-      loadingMessage.style.display = 'block';
-      successMessage.style.display = 'none';
+      // 1. Fetch the JSON data from ThingSpeak
+      const response = await fetch(apiURL);
+      const data = await response.json();
 
-      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-        .then(response => {
-          loadingMessage.style.display = 'none';
-          successMessage.style.display = 'block';
-          form.reset();
-        })
-        .catch(error => {
-          loadingMessage.textContent = 'Error! Please try again.';
-          console.error('Error!', error.message);
-        });
-    });
-  </script>
-</body>
+      // 2. Extract the values from the JSON fields
+      const temperature = data.field1;
+      const humidity = data.field2;
+      const motion = data.field3;
+      const power = data.field5; // Assuming Power is field 5
+
+      // 3. Update the HTML elements with the new data
+      document.getElementById('temp-val').innerText = parseFloat(temperature).toFixed(1) + ' °C';
+      document.getElementById('hum-val').innerText = parseFloat(humidity).toFixed(1) + ' %';
+      
+      // Change motion from 1/0 to Yes/No
+      if (motion == '1') {
+        document.getElementById('motion-val').innerText = 'Detected 🚶';
+        document.getElementById('motion-val').style.color = '#27ae60'; // Green
+      } else {
+        document.getElementById('motion-val').innerText = 'Empty 🛑';
+        document.getElementById('motion-val').style.color = '#c0392b'; // Red
+      }
+
+      document.getElementById('power-val').innerText = parseFloat(power).toFixed(2) + ' W';
+
+      // Update sync status
+      document.getElementById('sync-status').innerText = 'Live 🟢 (Last update: ' + new Date().toLocaleTimeString() + ')';
+      document.getElementById('sync-status').style.color = '#27ae60';
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      document.getElementById('sync-status').innerText = 'Connection Lost 🔴';
+      document.getElementById('sync-status').style.color = '#c0392b';
+    }
+  }
+
+  // 4. Run the function immediately when the page loads
+  fetchSmartBuildingData();
+
+  // 5. Set it to automatically run every 16 seconds (16000 milliseconds)
+  setInterval(fetchSmartBuildingData, 16000);
+
+</script>
+
+  </body>
 </html>
